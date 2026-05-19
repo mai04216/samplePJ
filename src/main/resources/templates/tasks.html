@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>タスク管理</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+
+<body>
+	<div class="tasksPage">
+		<h1>タスク一覧</h1>
+
+		<!-- タスクが0件のとき -->
+		<div th:if="${taskPage.totalElements == 0}" class="alert-info">
+			 現在タスクは登録されていません。「新規作成」から追加してください。
+		</div>
+
+		<!-- タスクがあるとき -->
+		<table th:if="${taskPage.totalElements > 0}" class="tasksTable">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>タイトル</th>
+					<th>内容</th>
+					<th>登録者</th>
+					<th>開始日</th>
+					<th>終了日</th>
+					<th>作成日時</th>
+					<th>更新日時</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="task : ${taskPage.content}">
+					<td th:text="${task.id}"></td>
+					<td th:text="${task.title}"></td>
+					<td th:text="${task.content}"></td>
+					<td th:text="${task.name}"></td>
+					<td th:text="${task.startDate}"></td>
+					<td th:text="${task.endDate}"></td>
+					<td th:text="${task.createdAt}"></td>
+					<td th:text="${task.updatedAt}"></td>
+					<td>
+					    <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn-edit">編集</a>
+					    <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn-delete">削除</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<nav th:if="${taskPage.totalPages > 1}" class="pagination">
+
+		    <!-- 1ページ目：グレーアウト（リンクなし） -->
+		    <span th:if="${currentPage == 1}" class="pagination-disabled">« 前</span>
+		    <!-- 2ページ目以降：リンクあり -->
+		    <a th:if="${currentPage > 1}" th:href="@{/tasks(page=${currentPage - 1})}">« 前</a>
+
+		    <!-- ページ番号 -->
+		    <span th:each="i : ${#numbers.sequence(1, taskPage.totalPages)}">
+		        <strong th:if="${i == currentPage}" th:text="${i}"></strong>
+		        <a th:if="${i != currentPage}" th:href="@{/tasks(page=${i})}" th:text="${i}"></a>
+		    </span>
+
+		    <!-- 最終ページ：グレーアウト（リンクなし） -->
+		    <span th:if="${currentPage == taskPage.totalPages}" class="pagination-disabled">次 »</span>
+		    <!-- 最終ページ以外：リンクあり -->
+		    <a th:if="${currentPage < taskPage.totalPages}" th:href="@{/tasks(page=${currentPage + 1})}">次 »</a>
+
+		</nav>
+		<a th:href="@{/tasks/new}">+新規作成</a>
+
+	</div>
+
+</body>
+
+</html>
