@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# ローカル開発用（Git管理外）
+application-local.properties
