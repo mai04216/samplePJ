@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PageController {
 
 	@Autowired
 	private TaskRepository taskRepository;
+	@Autowired
+	private UserService userService;
 
 //	TOP画面
 	@GetMapping("/")
@@ -34,6 +37,19 @@ public class PageController {
 	@GetMapping("/register")
 	public String registerPage() {
 		return "register";
+	}
+//	登録後の画面(postで受取る)
+	@PostMapping("/register")
+	public String register(@RequestParam("username") String username,@RequestParam("password") String password, Model model, RedirectAttributes ra) {
+		try{
+			userService.register(username, password);
+			ra.addFlashAttribute("message", "登録が完了しました。ログインしてください。");
+			return "redirect:/login";
+		}catch(IllegalArgumentException e) {
+			model.addAttribute("error", e.getMessage());
+			return "register";
+		}
+		
 	}
 
 //	タスク一覧画面

@@ -10,6 +10,7 @@
 <body>
 	<div class="login_page">
 		<h1>ログイン</h1>
+		<p th:if="${message}" th:text="${message}" style="color:green;"></p>
 
 		<div class="login_block">
 			<form th:action="@{/login}" method="post">
