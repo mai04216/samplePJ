@@ -14,7 +14,7 @@
 
 		<!-- タスクが0件のとき -->
 		<div th:if="${taskPage.totalElements == 0}" class="alert-info">
-			 現在タスクは登録されていません。「新規作成」から追加してください。
+			現在タスクは登録されていません。「新規作成」から追加してください。
 		</div>
 
 		<!-- タスクがあるとき -->
@@ -43,8 +43,12 @@
 					<td th:text="${task.createdAt}"></td>
 					<td th:text="${task.updatedAt}"></td>
 					<td>
-					    <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn-edit">編集</a>
-					    <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn-delete">削除</a>
+						<a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn-edit">編集</a>
+						<form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post" style="display:inline;">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+							<button type="submit" class="btn-delete"
+							onclick="return confirm('本当に削除しますか？')">削除</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>
@@ -52,21 +56,21 @@
 
 		<nav th:if="${taskPage.totalPages > 1}" class="pagination">
 
-		    <!-- 1ページ目：グレーアウト（リンクなし） -->
-		    <span th:if="${currentPage == 1}" class="pagination-disabled">« 前</span>
-		    <!-- 2ページ目以降：リンクあり -->
-		    <a th:if="${currentPage > 1}" th:href="@{/tasks(page=${currentPage - 1})}">« 前</a>
+			<!-- 1ページ目：グレーアウト（リンクなし） -->
+			<span th:if="${currentPage == 1}" class="pagination-disabled">« 前</span>
+			<!-- 2ページ目以降：リンクあり -->
+			<a th:if="${currentPage > 1}" th:href="@{/tasks(page=${currentPage - 1})}">« 前</a>
 
-		    <!-- ページ番号 -->
-		    <span th:each="i : ${#numbers.sequence(1, taskPage.totalPages)}">
-		        <strong th:if="${i == currentPage}" th:text="${i}"></strong>
-		        <a th:if="${i != currentPage}" th:href="@{/tasks(page=${i})}" th:text="${i}"></a>
-		    </span>
+			<!-- ページ番号 -->
+			<span th:each="i : ${#numbers.sequence(1, taskPage.totalPages)}">
+				<strong th:if="${i == currentPage}" th:text="${i}"></strong>
+				<a th:if="${i != currentPage}" th:href="@{/tasks(page=${i})}" th:text="${i}"></a>
+			</span>
 
-		    <!-- 最終ページ：グレーアウト（リンクなし） -->
-		    <span th:if="${currentPage == taskPage.totalPages}" class="pagination-disabled">次 »</span>
-		    <!-- 最終ページ以外：リンクあり -->
-		    <a th:if="${currentPage < taskPage.totalPages}" th:href="@{/tasks(page=${currentPage + 1})}">次 »</a>
+			<!-- 最終ページ：グレーアウト（リンクなし） -->
+			<span th:if="${currentPage == taskPage.totalPages}" class="pagination-disabled">次 »</span>
+			<!-- 最終ページ以外：リンクあり -->
+			<a th:if="${currentPage < taskPage.totalPages}" th:href="@{/tasks(page=${currentPage + 1})}">次 »</a>
 
 		</nav>
 		<a th:href="@{/tasks/new}">+新規作成</a>
