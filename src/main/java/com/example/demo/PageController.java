@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +24,8 @@ public class PageController {
 	private TaskRepository taskRepository;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private TaskService taskService;
 
 //	TOP画面
 	@GetMapping("/")
@@ -71,27 +72,26 @@ public class PageController {
 		return "tasks";
 	}
 
-//	タスク内容編集
+//	タスク更新画面　
 	@GetMapping("/tasks/edit/{id}")
 	public String editPage(@PathVariable("id") Long id, Principal principal, Model model) {
 		Task task = taskRepository.findByIdAndUsername(id, principal.getName())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		model.addAttribute("task", task);
+		TaskForm form = new TaskForm();
+		form.setTitle(task.getTitle());
+		form.setContent(task.getContent());
+		form.setName(task.getName());
+		form.setStartDate(task.getStartDate());
+		form.setEndDate(task.getEndDate());
+		model.addAttribute("form", form);
+		model.addAttribute("taskId", id);
 		return "edit";
 	}
 
-//	タスク編集後更新
+//	タスク更新時　処理完了後、タスク一覧へ戻る
 	@PostMapping("/tasks/update/{id}")
-	public String updateTask(@PathVariable("id") Long id, @ModelAttribute Task task, Principal principal) {
-		Task existingTask = taskRepository.findByIdAndUsername(id, principal.getName())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		existingTask.setTitle(task.getTitle());
-		existingTask.setContent(task.getContent());
-		existingTask.setName(task.getName());
-		existingTask.setStartDate(task.getStartDate());
-		existingTask.setEndDate(task.getEndDate());
-		existingTask.setUpdatedAt(LocalDateTime.now());
-		taskRepository.save(existingTask);
+	public String updateTask(@PathVariable("id") Long id, @ModelAttribute("form") TaskForm form, Principal principal) {
+		taskService.update(id, principal.getName(), form);
 		return "redirect:/tasks";
 	}
 
