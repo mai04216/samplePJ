@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class PageController {
@@ -102,6 +105,22 @@ public class PageController {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		taskRepository.deleteById(id);
 		return "redirect:/tasks";
+	}
+	
+//	タスク新規作成画面
+	@GetMapping("/tasks/new")
+	public String newPage(Model model) {
+		model.addAttribute("form", new TaskForm());
+		return "new";
+	}
+	
+	@PostMapping("/tasks")
+	public String create(@Valid @ModelAttribute("form") TaskForm form,
+	                      BindingResult br,
+	                      Principal principal) {
+	    if (br.hasErrors()) return "new";
+	    taskService.create(principal.getName(), form);
+	    return "redirect:/tasks";
 	}
 
 }

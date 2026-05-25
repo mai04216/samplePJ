@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク新規作成</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>タスク新規作成</h1>
+
+        <form th:action="@{/tasks}" th:object="${form}" method="post">
+            <div class="form-group">
+                <label for="title">タイトル</label>
+                <input type="text" id="title" th:field="*{title}" class="form-control">
+                <span class="error" th:errors="*{title}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="content">内容</label>
+                <textarea id="content" th:field="*{content}" class="form-control" rows="3"></textarea>
+                <span class="error" th:errors="*{content}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="name">登録者</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control">
+                <span class="error" th:errors="*{name}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">開始日</label>
+                <input type="date" id="startDate" th:field="*{startDate}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">終了日</label>
+                <input type="date" id="endDate" th:field="*{endDate}" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary">登録</button>
+            <a th:href="@{/tasks}" class="btn btn-secondary">キャンセル</a>
+        </form>
+    </div>
+</body>
+</html>
