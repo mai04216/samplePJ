@@ -38,7 +38,7 @@ public class Task {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 
-	@Column(name = "created_at")
+	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
 
 	@Column(name = "updated_at")
