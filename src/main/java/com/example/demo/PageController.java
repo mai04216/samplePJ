@@ -90,12 +90,7 @@ public class PageController {
 		return "edit";
 	}
 
-//	タスク更新時　処理完了後、タスク一覧へ戻る
-	@PostMapping("/tasks/update/{id}")
-	public String updateTask(@PathVariable("id") Long id, @ModelAttribute("form") TaskForm form, Principal principal) {
-		taskService.update(id, principal.getName(), form);
-		return "redirect:/tasks";
-	}
+
 
 //	タスク削除処理
 	@PostMapping("/tasks/delete/{id}")
@@ -120,4 +115,17 @@ public class PageController {
 	    return "redirect:/tasks";
 	}
 
+	@PostMapping("/tasks/update/{id}")
+	public String update(@PathVariable Long id,
+	                      @Valid @ModelAttribute("form") TaskForm form,
+	                      BindingResult br,
+	                      Principal principal,
+	                      Model model) {
+	    if (br.hasErrors()) {
+	        model.addAttribute("taskId", id);
+	        return "edit";
+	    }
+	    taskService.update(id, principal.getName(), form);
+	    return "redirect:/tasks";
+	}
 }

@@ -399,7 +399,24 @@ body {
 	background-color: #5a6268;
 }
 
+
 .error {
-    color: red;
-    font-size: 0.85em;
+    color: #c00;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.alert-error {
+    background: #fde6e6;
+    border: 1px solid #f5c2c2;
+    color: #a00;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.alert-error ul {
+    margin: 0;
+    padding-left: 20px;
 }
