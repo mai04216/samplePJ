@@ -2,9 +2,17 @@ package com.example.demo;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class TaskForm {
-    private String title;
-    private String content;
+	
+	@NotBlank(message = "※タイトルは必須です")
+	private String title;
+	
+	@NotBlank(message = "※内容は必須です")
+	private String content;
+	
+    
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;

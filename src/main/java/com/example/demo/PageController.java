@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,16 +14,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 
+
+//　Controllerクラス
+
+
 @Controller
 public class PageController {
 
-	@Autowired
-	private TaskRepository taskRepository;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -69,7 +69,7 @@ public class PageController {
 			Model model) {
 		int pageSize = 10;
 		Pageable pageable = PageRequest.of(page - 1, pageSize);
-		Page<Task> taskPage = taskRepository.findByUsername(principal.getName(), pageable);
+		Page<Task> taskPage = taskService.findMyTasks(principal.getName(), pageable);
 		model.addAttribute("taskPage", taskPage);
 		model.addAttribute("currentPage", page);
 		return "tasks";
@@ -78,8 +78,7 @@ public class PageController {
 //	タスク更新画面　
 	@GetMapping("/tasks/edit/{id}")
 	public String editPage(@PathVariable("id") Long id, Principal principal, Model model) {
-		Task task = taskRepository.findByIdAndUsername(id, principal.getName())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		Task task = taskService.getMyTask(id,  principal.getName());
 		TaskForm form = new TaskForm();
 		form.setTitle(task.getTitle());
 		form.setContent(task.getContent());
@@ -101,9 +100,7 @@ public class PageController {
 //	タスク削除処理
 	@PostMapping("/tasks/delete/{id}")
 	public String deleteTask(@PathVariable("id") Long id, Principal principal) {
-		Task task = taskRepository.findByIdAndUsername(id, principal.getName())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		taskRepository.deleteById(id);
+		taskService.delete(id,  principal.getName());
 		return "redirect:/tasks";
 	}
 	

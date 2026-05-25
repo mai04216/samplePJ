@@ -2,6 +2,8 @@ package com.example.demo;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +42,22 @@ public class TaskService {
         task.setCreatedAt(now);
         task.setUpdatedAt(now);
         taskRepository.save(task);
+    }
+    
+    @Transactional(readOnly = true)
+    public Page<Task> findMyTasks(String username, Pageable pageable) {
+        return taskRepository.findByUsername(username, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Task getMyTask(Long id, String username) {
+        return taskRepository.findByIdAndUsername(id, username)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @Transactional
+    public void delete(Long id, String username) {
+        Task task = getMyTask(id, username);
+        taskRepository.delete(task);
     }
 }

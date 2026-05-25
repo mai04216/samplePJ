@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+//　Entity　DBの情報をクラス化する
+
 @Entity
 @Table(name = "tasks")
 public class Task {
