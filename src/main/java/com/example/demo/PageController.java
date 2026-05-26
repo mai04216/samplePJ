@@ -2,10 +2,8 @@ package com.example.demo;
 
 import java.security.Principal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,18 +15,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 //　Controllerクラス
-
 @Controller
 public class PageController {
-
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private TaskService taskService;
-
+	
+	private final UserService userService;
+	private final TaskService taskService;
 	private static final int PAGE_SIZE = 10;
+	
+	public PageController(UserService userService, TaskService taskService) {
+        this.userService = userService;
+        this.taskService = taskService;
+	}
 
 //	TOP画面
 	@GetMapping("/")
