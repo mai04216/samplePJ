@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.todo.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

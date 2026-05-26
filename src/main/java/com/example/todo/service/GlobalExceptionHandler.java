@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.todo.service;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

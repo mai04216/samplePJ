@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.todo.controller;
 
 import java.security.Principal;
 
@@ -14,18 +14,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.todo.entity.Task;
+import com.example.todo.form.TaskForm;
+import com.example.todo.service.TaskService;
+import com.example.todo.service.UserService;
+
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 //　Controllerクラス
 @Controller
-public class PageController {
+public class TaskController {
 	
 	private final UserService userService;
 	private final TaskService taskService;
 	private static final int PAGE_SIZE = 10;
 	
-	public PageController(UserService userService, TaskService taskService) {
+	public TaskController(UserService userService, TaskService taskService) {
         this.userService = userService;
         this.taskService = taskService;
 	}
@@ -121,7 +125,7 @@ public class PageController {
 	}
 
 	@PostMapping("/tasks/update/{id}")
-	public String update(@PathVariable Long id, @Valid @ModelAttribute("form") TaskForm form, BindingResult br,
+	public String update(@PathVariable("id") Long id, @Valid @ModelAttribute("form") TaskForm form, BindingResult br,
 			Principal principal, Model model) {
 		if (br.hasErrors()) {
 			model.addAttribute("taskId", id);
