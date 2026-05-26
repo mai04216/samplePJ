@@ -16,6 +16,8 @@
 		<div th:if="${taskPage.totalElements == 0}" class="alert-info">
 			現在タスクは登録されていません。「新規作成」から追加してください。
 		</div>
+		
+		<div th:if="${message}" th:text="${message}" class="alert-info"></div>
 
 		<!-- タスクがあるとき -->
 		<table th:if="${taskPage.totalElements > 0}" class="tasksTable">
