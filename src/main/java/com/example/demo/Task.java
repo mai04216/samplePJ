@@ -20,6 +20,7 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+//	タスク所有者（ユーザーのログインID)
 	@Column(name = "username", nullable = false)
 	private String username;
 
@@ -29,6 +30,7 @@ public class Task {
 	@Column(name = "content")
 	private String content;
 
+//	担当者名(手入力）
 	@Column(name = "name")
 	private String name;
 
