@@ -37,4 +37,8 @@ out/
 .vscode/
 
 # ローカル開発用（Git管理外）
-application-local.properties
+application-local.properties.DS_Store 
+
+# macOS
+.DS_Store
+**/.DS_Store
