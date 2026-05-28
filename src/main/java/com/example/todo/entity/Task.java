@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 //　Entity　DBの情報をクラス化する
@@ -34,7 +32,7 @@ public class Task {
 
 //	担当者名(手入力）
 	@Column(name = "name")
-	private String name;
+	private String assigneeName;
 
 	@Column(name = "start_date")
 	private LocalDate startDate;
@@ -42,10 +40,10 @@ public class Task {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 
-	@Column(name = "created_at", updatable = false, nullable = false)
+	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
 
-	@Column(name = "updated_at", nullable = false)
+	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
 	public Long getId() {
@@ -80,12 +78,12 @@ public class Task {
 		this.content = content;
 	}
 
-	public String getName() {
-		return name;
+	public String getAssigneeName() {
+		return assigneeName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAssigneeName(String assigneeName) {
+		this.assigneeName = assigneeName;
 	}
 
 	public LocalDate getStartDate() {
@@ -114,20 +112,6 @@ public class Task {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
-	}
-	
-	@PrePersist
-	void onCreate() {
-	    if (this.createdAt == null) {
-	        LocalDateTime now = LocalDateTime.now();
-	        this.createdAt = now;
-	        this.updatedAt = now;
-	    }
-	}
-
-	@PreUpdate
-	void onUpdate() {
-	    this.updatedAt = LocalDateTime.now();
 	}
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {

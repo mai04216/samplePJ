@@ -60,7 +60,7 @@ public class TaskController {
 		TaskForm form = new TaskForm();
 		form.setTitle(task.getTitle());
 		form.setContent(task.getContent());
-		form.setName(task.getName());
+		form.setAssigneeName(task.getAssigneeName());
 		form.setStartDate(task.getStartDate());
 		form.setEndDate(task.getEndDate());
 		model.addAttribute("form", form);

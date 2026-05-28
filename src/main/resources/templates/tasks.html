@@ -39,7 +39,7 @@
 					<td th:text="${task.id}"></td>
 					<td th:text="${task.title}"></td>
 					<td th:text="${task.content}"></td>
-					<td th:text="${task.name}"></td>
+					<td th:text="${task.assigneeName}"></td>
 					<td th:text="${task.startDate != null} ? ${#temporals.format(task.startDate, 'yyyy/MM/dd')} : '-'"></td>
 					<td th:text="${task.endDate != null} ? ${#temporals.format(task.endDate, 'yyyy/MM/dd')} : '-'"></td>
 					<td th:text="${task.createdAt != null} ? ${#temporals.format(task.createdAt, 'yyyy/MM/dd HH:mm')} : '-'"></td>
