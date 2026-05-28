@@ -14,20 +14,21 @@
 	<div class="loginBlock">
 		<div class="registerPage">
 			<h1>ユーザ登録</h1>
-			<p th:if="${error}" th:text="${error}" style="color:red"></p>
+			
 
-			<form th:action="@{/register}" method="post">
-				<label for="username">ユーザ名（半角英字）</label>
-				<input type="text" id="username" name="username" class="registerForm" required pattern="[a-zA-Z]+"
-					title="半角英字のみ入力してください">
+			<form th:action="@{/register}" th:object="${form}" method="post">
+				<p th:if="${#fields.hasGlobalErrors()}" 
+							   th:errors="*{global}" style="color:red"></p>
+			    <label for="username">ユーザ名（半角英字）</label>
+			    <input type="text" id="username" th:field="*{username}" class="registerForm">
+			    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color:red"></p>
 
-				<label for="password">パスワード（半角英数字）</label>
-				<input type="password" id="password" name="password" class="registerForm" required
-					pattern="[a-zA-Z0-9]+" title="半角英数字で入力してください">
+			    <label for="password">パスワード（半角英数字）</label>
+			    <input type="password" id="password" th:field="*{password}" class="registerForm">
+			    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red"></p>
 
-				<button type="submit" class="formLogin_button">登録</button>
-
-				<a th:href="@{/login}" class="formLogin_link">ログインはこちら</a>
+			    <button type="submit" class="formLogin_button">登録</button>
+			    <a th:href="@{/login}" class="formLogin_link">ログインはこちら</a>
 			</form>
 		</div>
 	</div>

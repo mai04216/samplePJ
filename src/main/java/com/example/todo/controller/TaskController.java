@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.todo.entity.Task;
 import com.example.todo.form.TaskForm;
@@ -32,39 +31,6 @@ public class TaskController {
 	public TaskController(UserService userService, TaskService taskService) {
         this.userService = userService;
         this.taskService = taskService;
-	}
-
-//	TOP画面
-	@GetMapping("/")
-	public String top() {
-		return "top";
-	}
-
-//	ログイン画面
-	@GetMapping("/login")
-	public String loginPage() {
-		return "login";
-	}
-
-//	登録画面
-	@GetMapping("/register")
-	public String registerPage() {
-		return "register";
-	}
-
-//	登録後の画面(postで受取る)
-	@PostMapping("/register")
-	public String register(@RequestParam("username") String username, @RequestParam("password") String password,
-			Model model, RedirectAttributes ra) {
-		try {
-			userService.register(username, password);
-			ra.addFlashAttribute("message", "登録が完了しました。ログインしてください。");
-			return "redirect:/login";
-		} catch (IllegalArgumentException e) {
-			model.addAttribute("error", e.getMessage());
-			return "register";
-		}
-
 	}
 
 //	タスク一覧画面
@@ -133,5 +99,9 @@ public class TaskController {
 		}
 		taskService.update(id, principal.getName(), form);
 		return "redirect:/tasks";
+	}
+
+	public UserService getUserService() {
+		return userService;
 	}
 }
