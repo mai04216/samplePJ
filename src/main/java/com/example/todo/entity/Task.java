@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 //　Entity　DBの情報をクラス化する
@@ -40,10 +42,10 @@ public class Task {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 
-	@Column(name = "created_at", updatable = false)
+	@Column(name = "created_at", updatable = false, nullable = false)
 	private LocalDateTime createdAt;
 
-	@Column(name = "updated_at")
+	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
 
 	public Long getId() {
@@ -112,6 +114,20 @@ public class Task {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
+	}
+	
+	@PrePersist
+	void onCreate() {
+	    if (this.createdAt == null) {
+	        LocalDateTime now = LocalDateTime.now();
+	        this.createdAt = now;
+	        this.updatedAt = now;
+	    }
+	}
+
+	@PreUpdate
+	void onUpdate() {
+	    this.updatedAt = LocalDateTime.now();
 	}
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {

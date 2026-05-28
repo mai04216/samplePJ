@@ -16,37 +16,43 @@ import jakarta.validation.Valid;
 @Controller
 public class AuthController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
+	public AuthController(UserService userService) {
+		this.userService = userService;
+	}
 
-    // ログイン画面
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
-    }
+//	トップ画面
+	@GetMapping("")
+	public String topPage() {
+		return "top";
+	}
 
-    // 登録画面
-    @GetMapping("/register")
-    public String registerPage(Model model) {
-        model.addAttribute("form", new RegisterForm());
-        return "register";
-    }
+	// ログイン画面
+	@GetMapping("/login")
+	public String loginPage() {
+		return "login";
+	}
 
-    // 登録処理
-    @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("form") RegisterForm form,
-                           BindingResult br, RedirectAttributes ra) {
-        if (br.hasErrors()) return "register";
-        try {
-            userService.register(form.getUsername(), form.getPassword());
-            ra.addFlashAttribute("message", "登録が完了しました。ログインしてください。");
-            return "redirect:/login";
-        } catch (IllegalArgumentException e) {
-            br.reject("duplicate", e.getMessage());
-            return "register";
-        }
-    }
+	// 登録画面
+	@GetMapping("/register")
+	public String registerPage(Model model) {
+		model.addAttribute("form", new RegisterForm());
+		return "register";
+	}
+
+	// 登録処理
+	@PostMapping("/register")
+	public String register(@Valid @ModelAttribute("form") RegisterForm form, BindingResult br, RedirectAttributes ra) {
+		if (br.hasErrors())
+			return "register";
+		try {
+			userService.register(form.getUsername(), form.getPassword());
+			ra.addFlashAttribute("message", "登録が完了しました。ログインしてください。");
+			return "redirect:/login";
+		} catch (IllegalArgumentException e) {
+			br.reject("duplicate", e.getMessage());
+			return "register";
+		}
+	}
 }
