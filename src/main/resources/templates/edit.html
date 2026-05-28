@@ -13,7 +13,7 @@
 
         <form th:action="@{/tasks/update/{id}(id=${taskId})}" th:object="${form}" method="post">
 
-            <!-- グローバルエラー + 日付範囲エラー -->
+            <!-- グローバルエラー + `isValidDateRange` のクロスフィールド検証 -->
             <div th:if="${#fields.hasGlobalErrors() or #fields.hasErrors('validDateRange')}" class="alert-error">
                 <ul>
                     <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
