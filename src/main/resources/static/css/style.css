@@ -227,16 +227,17 @@ body {
 	margin-right: 8px;
 	text-decoration: none;
 }
-	.tasksTable td:last-child {
-		display: flex;
-		align-items: center;
-		gap: 5px;
-	}
 
-	.tasksTable td:last-child .btn-delete {
-		border: none;
-		cursor: pointer;
-	}
+.tasksTable td:last-child {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.tasksTable td:last-child .btn-delete {
+	border: none;
+	cursor: pointer;
+}
 
 
 .btn-edit {
@@ -401,22 +402,35 @@ body {
 
 
 .error {
-    color: #c00;
-    font-size: 12px;
-    margin-top: 4px;
-    display: block;
+	color: #c00;
+	font-size: 12px;
+	margin-top: 4px;
+	display: block;
 }
 
 .alert-error {
-    background: #fde6e6;
-    border: 1px solid #f5c2c2;
-    color: #a00;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 16px;
+	background: #fde6e6;
+	border: 1px solid #f5c2c2;
+	color: #a00;
+	padding: 10px;
+	border-radius: 4px;
+	margin-bottom: 16px;
 }
 
 .alert-error ul {
-    margin: 0;
-    padding-left: 20px;
+	margin: 0;
+	padding-left: 20px;
+}
+
+.page-header {
+	text-align: right;
+	margin: 10px;
+}
+
+.logout_btn {
+	background-color: #0066cc;
+	color: white;
+	border-radius: 4px;
+	padding: 10px;
+	font-size: 14px;
 }

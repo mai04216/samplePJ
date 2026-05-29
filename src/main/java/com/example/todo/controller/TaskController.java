@@ -50,6 +50,7 @@ public class TaskController {
 
 		model.addAttribute("taskPage", taskPage);
 		model.addAttribute("currentPage", safePage);
+		model.addAttribute("loginUsername", principal.getName());
 		return "tasks";
 	}
 
