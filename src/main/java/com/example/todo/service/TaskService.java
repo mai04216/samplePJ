@@ -1,9 +1,8 @@
 package com.example.todo.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,19 +10,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.todo.entity.Task;
 import com.example.todo.form.TaskForm;
-import com.example.todo.repository.TaskRepository;
+import com.example.todo.repository.TaskMapper;
 
 @Service
 public class TaskService {
-    private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
 
-    public TaskService(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    public TaskService(TaskMapper taskMapper) {
+        this.taskMapper = taskMapper;
     }
 
     @Transactional
     public void update(Long id, String username, TaskForm form) {
-        Task task = taskRepository.findByIdAndUsername(id, username)
+        Task task = taskMapper.findByIdAndUsername(id, username)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         task.setTitle(form.getTitle());
         task.setContent(form.getContent());
@@ -31,8 +30,9 @@ public class TaskService {
         task.setStartDate(form.getStartDate());
         task.setEndDate(form.getEndDate());
         task.setUpdatedAt(LocalDateTime.now());
+        taskMapper.updateMyTask(task);  // MyBatisは明示的にUPDATEを呼ぶ
     }
-    
+
     @Transactional
     public void create(String username, TaskForm form) {
         Task task = new Task();
@@ -45,23 +45,28 @@ public class TaskService {
         LocalDateTime now = LocalDateTime.now();
         task.setCreatedAt(now);
         task.setUpdatedAt(now);
-        taskRepository.save(task);
+        taskMapper.insert(task);
     }
-    
+
     @Transactional(readOnly = true)
-    public Page<Task> findMyTasks(String username, Pageable pageable) {
-        return taskRepository.findByUsername(username, pageable);
+    public List<Task> findMyTasks(String username, int page, int size) {
+        int offset = page * size;
+        return taskMapper.findByUsername(username, size, offset);
+    }
+
+    public long countMyTasks(String username) {
+        return taskMapper.countByUsername(username);
     }
 
     @Transactional(readOnly = true)
     public Task getMyTask(Long id, String username) {
-        return taskRepository.findByIdAndUsername(id, username)
+        return taskMapper.findByIdAndUsername(id, username)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Transactional
     public void delete(Long id, String username) {
-        Task task = getMyTask(id, username);
-        taskRepository.delete(task);
+        getMyTask(id, username);  // 所有者チェック
+        taskMapper.deleteByIdAndUsername(id, username);
     }
 }

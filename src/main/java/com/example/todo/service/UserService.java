@@ -8,32 +8,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.todo.entity.User;
-import com.example.todo.repository.UserRepository;
+import com.example.todo.repository.UserMapper;
 
 @Service
 public class UserService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+
+    public UserService(UserMapper userMapper, PasswordEncoder passwordEncoder) {
+        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public void register(String username, String rawPassword) {
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userMapper.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("そのユーザー名は既に使われています");
         }
         User u = new User();
         u.setUsername(username);
         u.setPasswordHash(passwordEncoder.encode(rawPassword));
-        userRepository.save(u);
+        userMapper.insert(u);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User u = userRepository.findByUsername(username)
+        User u = userMapper.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException(username));
         return org.springframework.security.core.userdetails.User
             .withUsername(u.getUsername())

@@ -3,47 +3,18 @@ package com.example.todo.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-//　Entity　DBの情報をクラス化する
-
-@Entity
-@Table(name = "tasks")
 public class Task {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-//	タスク所有者（ユーザーのログインID)
-	@Column(name = "username", nullable = false)
+	// タスク所有者（ユーザーのログインID）
 	private String username;
-
-	@Column(name = "title", nullable = false)
 	private String title;
-
-	@Column(name = "content")
 	private String content;
-
-//	担当者名(手入力）
-	@Column(name = "name")
+	// 担当者名（手入力）
 	private String assigneeName;
-
-	@Column(name = "start_date")
 	private LocalDate startDate;
-
-	@Column(name = "end_date")
 	private LocalDate endDate;
-
-	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt;
-
-	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
 	public Long getId() {
@@ -117,5 +88,4 @@ public class Task {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
 }
