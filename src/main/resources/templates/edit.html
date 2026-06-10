@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label for="name">登録者</label>
                 <input type="text" id="name" th:field="*{assigneeName}" class="form-control">
-                <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{assigneeName}"></span>
+                <span class="error" th:if="${#fields.hasErrors('assigneeName')}" th:errors="*{assigneeName}"></span>
             </div>
 
             <div class="form-group">

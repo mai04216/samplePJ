@@ -1,5 +1,6 @@
 package com.example.todo.service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,9 +16,11 @@ import com.example.todo.repository.TaskMapper;
 @Service
 public class TaskService {
     private final TaskMapper taskMapper;
+    private final Clock clock;
 
-    public TaskService(TaskMapper taskMapper) {
+    public TaskService(TaskMapper taskMapper, Clock clock) {
         this.taskMapper = taskMapper;
+        this.clock = clock;
     }
 
     @Transactional
@@ -29,8 +32,8 @@ public class TaskService {
         task.setAssigneeName(form.getAssigneeName());
         task.setStartDate(form.getStartDate());
         task.setEndDate(form.getEndDate());
-        task.setUpdatedAt(LocalDateTime.now());
-        taskMapper.updateMyTask(task);  // MyBatisは明示的にUPDATEを呼ぶ
+        task.setUpdatedAt(LocalDateTime.now(clock));
+        taskMapper.updateMyTask(task); 
     }
 
     @Transactional
@@ -42,7 +45,7 @@ public class TaskService {
         task.setAssigneeName(form.getAssigneeName());
         task.setStartDate(form.getStartDate());
         task.setEndDate(form.getEndDate());
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(clock);
         task.setCreatedAt(now);
         task.setUpdatedAt(now);
         taskMapper.insert(task);
