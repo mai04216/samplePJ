@@ -18,7 +18,7 @@ public class TaskForm {
 	private String content;
 
 	@NotBlank(message = "※登録者は必須です")
-	@Size(max = 50, message = "内容は50文字以内で入力してください")
+	@Size(max = 50, message = "登録者は50文字以内で入力してください")
 	private String assigneeName;
 
 	private LocalDate startDate;
