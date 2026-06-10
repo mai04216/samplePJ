@@ -22,12 +22,10 @@ import jakarta.validation.Valid;
 @Controller
 public class TaskController {
 
-    private final UserService userService;
     private final TaskService taskService;
     private static final int PAGE_SIZE = 10;
 
     public TaskController(UserService userService, TaskService taskService) {
-        this.userService = userService;
         this.taskService = taskService;
     }
 
@@ -98,7 +96,4 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    public UserService getUserService() {
-        return userService;
-    }
 }

@@ -37,3 +37,4 @@ dependencies {
 }
 
 /* 5/21 Spring Security追加 (#02) */
+/* 6/10　JPA→Mybatisに変更　*/
